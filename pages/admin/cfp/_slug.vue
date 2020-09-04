@@ -18,13 +18,13 @@
 </template>
 
 <script>
-import { useContext } from '@nuxtjs/composition-api';
-import { useApi } from '~/data/useApi';
+import { useParamToRef } from '~/utils/useParamToRef';
+import { useCfpBySlug } from '~/data/cfp';
 
 export default {
   setup() {
-    const { params } = useContext();
-    const { data: cfp } = useApi(() => ['cfps', params.value.slug]);
+    const slugRef = useParamToRef('slug');
+    const { data: cfp } = useCfpBySlug(slugRef);
 
     return {
       cfp,

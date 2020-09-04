@@ -1,0 +1,1 @@
+export { useCfpBySlug } from './useCfpBySlug';
