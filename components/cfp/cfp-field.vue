@@ -17,8 +17,11 @@ export default {
     },
   },
   setup(props) {
-    // eslint-disable-next-line prefer-template
-    const fieldComponent = computed(() => () => import('./' + props.field.type + '-field'));
+    const fieldComponent = computed(() => {
+      const fieldType = props.field.type;
+      // eslint-disable-next-line prefer-template
+      return () => import('./' + fieldType + '-field');
+    });
 
     return {
       fieldComponent,
