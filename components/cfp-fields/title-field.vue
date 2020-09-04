@@ -8,7 +8,11 @@
 
 <script>
 export default {
-  name: 'TitleField',
-  props: ['field'],
+  props: {
+    field: {
+      type: Object,
+      default: null,
+    },
+  },
 };
 </script>

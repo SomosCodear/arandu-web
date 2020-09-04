@@ -9,11 +9,11 @@
     <p>
       {{ cfp.description }}
     </p>
-    <div v-for="field in cfp.fields" :key="field.id">
-      <title-field v-if="field.type === 'title'" :field="field" />
-      <input-field v-if="field.type === 'input'" :field="field" />
-      <select-field v-if="field.type === 'select'" :field="field" />
-    </div>
+    <cfp-field
+      v-for="field in cfp.fields"
+      :key="field.id"
+      :field="field"
+    />
   </div>
 </template>
 
@@ -24,7 +24,6 @@ import { useApi } from '~/data/useApi';
 export default {
   setup() {
     const { params } = useContext();
-    // use a function key to listen for changes on the url ref
     const { data: cfp } = useApi(() => ['cfps', params.value.slug]);
 
     return {
