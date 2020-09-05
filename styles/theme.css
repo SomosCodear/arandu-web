@@ -1,0 +1,16 @@
+:root {
+  /* base colors */
+  --gray: #c2c2c2;
+  --shadow-color: 0 0 0.125rem 0.0625rem rgba(0, 0, 0, 0.34);
+  --arandu-green: #87c986;
+
+  /* cfp field */
+  --hint-color: var(--gray);
+
+  /* input */
+  --input-border-color: var(--arandu-green);
+
+  /* select */
+  --select-border-color: var(--arandu-green);
+  --select-arrow-color: var(--arandu-green);
+}
