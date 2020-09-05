@@ -1,9 +1,9 @@
 <template>
   <div>
-    <h3>
+    <cfp-field-title>
       {{ field.title }}
-    </h3>
-    <select>
+    </cfp-field-title>
+    <arandu-select>
       <option
         v-for="option in field.options"
         :key="option.id"
@@ -11,10 +11,10 @@
       >
         {{ option.title }}
       </option>
-    </select>
-    <p>
+    </arandu-select>
+    <cfp-field-hint>
       {{ field.hint }}
-    </p>
+    </cfp-field-hint>
   </div>
 </template>
 

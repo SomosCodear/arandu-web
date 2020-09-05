@@ -3,6 +3,7 @@
     :is="fieldComponent"
     v-if="fieldComponent"
     :field="field"
+    class="cfp-field-component"
   />
 </template>
 
@@ -29,3 +30,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.cfp-field-component {
+  padding: 0.5rem 0;
+}
+</style>

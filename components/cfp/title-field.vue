@@ -1,9 +1,7 @@
 <template>
-  <div>
-    <h3>
-      {{ field.value }}
-    </h3>
-  </div>
+  <h2>
+    {{ field.value }}
+  </h2>
 </template>
 
 <script>
@@ -16,3 +14,9 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+h2 {
+  margin: 0;
+}
+</style>

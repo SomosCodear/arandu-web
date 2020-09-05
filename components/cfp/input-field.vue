@@ -1,12 +1,12 @@
 <template>
   <div>
-    <h3>
+    <cfp-field-title>
       {{ field.title }}
-    </h3>
-    <input type="text">
-    <p>
+    </cfp-field-title>
+    <arandu-input type="text" />
+    <cfp-field-hint>
       {{ field.hint }}
-    </p>
+    </cfp-field-hint>
   </div>
 </template>
 

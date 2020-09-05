@@ -1,19 +1,18 @@
 <template>
-  <div
-    v-if="cfp != null"
-    class="container"
-  >
+  <div v-if="cfp != null" class="cfp-admin-container">
     <h1>
       {{ cfp.title }}
     </h1>
     <p>
       {{ cfp.description }}
     </p>
-    <cfp-field
-      v-for="field in sortedFields"
-      :key="field.id"
-      :field="field"
-    />
+    <card class="cfp-form">
+      <cfp-field
+        v-for="field in sortedFields"
+        :key="field.id"
+        :field="field"
+      />
+    </card>
   </div>
 </template>
 
@@ -37,14 +36,21 @@ export default {
 };
 </script>
 
-<style scoped>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
+<style lang="scss" scoped>
+.cfp-admin-container {
+  margin: 4rem auto;
+  width: 64rem;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   text-align: center;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.cfp-form {
+  align-self: stretch;
+  text-align: left;
 }
 </style>
