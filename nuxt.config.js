@@ -68,6 +68,13 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {},
+  /**
+  ** Public runtime config
+  ** See https://nuxtjs.org/guide/runtime-config/
+  */
+  publicRuntimeConfig: {
+    apiUrl: process.env.API_URL,
+  },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
