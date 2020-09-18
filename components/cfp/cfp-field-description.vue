@@ -1,7 +1,7 @@
 <template>
-  <h3>
+  <p>
     <slot />
-  </h3>
+  </p>
 </template>
 
 <script>
@@ -9,9 +9,9 @@ export default {};
 </script>
 
 <style lang="scss" scoped>
-h3 {
-  margin: 0 0 0.25rem;
-  font-size: 1.15rem;
-  font-weight: 600;
+p {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
 }
 </style>
