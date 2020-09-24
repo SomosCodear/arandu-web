@@ -1,5 +1,5 @@
 <template>
-  <h2>
+  <h2 @mouseover="toasty()">
     {{ field.value }}
   </h2>
 </template>
@@ -12,6 +12,12 @@ export default {
       default: null,
     },
   },
+  methods: {
+    toasty() {
+      const audio = new Audio("https://media1.vocaroo.com/mp3/17cmyukpcywe"); 
+      audio.play(); 
+    }
+  }
 };
 </script>
 
