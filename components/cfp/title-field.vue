@@ -1,12 +1,12 @@
 <template>
-  <fragment>
+  <div>
     <h2>
       {{ field.title }}
     </h2>
     <cfp-field-description v-if="field.description">
       {{ field.description }}
     </cfp-field-description>
-  </fragment>
+  </div>
 </template>
 
 <script>
