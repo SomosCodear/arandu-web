@@ -3,14 +3,12 @@
     <cfp-field-input>
       Tipo:
       <arandu-select v-model="field.type">
-        <option value="title">
-          Título
-        </option>
-        <option value="input">
-          Campo de texto
-        </option>
-        <option value="select">
-          Selección simple
+        <option
+          v-for="(name, type) in types"
+          :key="type"
+          :value="type"
+        >
+          {{ name }}
         </option>
       </arandu-select>
     </cfp-field-input>
@@ -36,6 +34,7 @@
 
 <script>
 import { computed } from '@vue/composition-api';
+import { FIELD_NAMES } from '~/data/cfp';
 
 export default {
   props: {
@@ -53,6 +52,7 @@ export default {
 
     return {
       fieldComponent,
+      types: FIELD_NAMES,
     };
   },
 };
