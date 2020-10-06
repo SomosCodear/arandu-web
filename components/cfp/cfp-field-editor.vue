@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <label>
+  <fragment>
+    <cfp-field-input>
       Tipo:
       <arandu-select v-model="field.type">
         <option value="title">
@@ -13,23 +13,25 @@
           Selección simple
         </option>
       </arandu-select>
-    </label>
-    <label>
+    </cfp-field-input>
+    <cfp-field-input>
       Nombre:
       <arandu-input v-model="field.name" />
-    </label>
+    </cfp-field-input>
     <component
       :is="fieldComponent"
       v-if="fieldComponent"
       :field="field"
     />
-    <button @click="$emit('save-changes')">
-      Guardar
-    </button>
-    <button @click="$emit('cancel-changes')">
-      Cancelar
-    </button>
-  </div>
+    <div class="actions">
+      <button @click="$emit('save-changes')">
+        Guardar
+      </button>
+      <button @click="$emit('cancel-changes')">
+        Cancelar
+      </button>
+    </div>
+  </fragment>
 </template>
 
 <script>
@@ -55,3 +57,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.actions {
+  margin-top: 1rem;
+}
+</style>

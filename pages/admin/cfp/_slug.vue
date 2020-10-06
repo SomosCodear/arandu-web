@@ -126,6 +126,8 @@ export default {
 
 .cfp-config {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .cfp-field-wrapper {

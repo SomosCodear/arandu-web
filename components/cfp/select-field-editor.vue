@@ -1,23 +1,20 @@
 <template>
-  <div>
-    <label>
+  <fragment>
+    <cfp-field-input>
       Título:
       <arandu-input v-model="field.title" />
-    </label>
-    <label>
+    </cfp-field-input>
+    <cfp-field-input>
       Descripción:
       <arandu-input v-model="field.description" />
-    </label>
-    <label>
+    </cfp-field-input>
+    <cfp-field-input>
       Hint:
       <arandu-input v-model="field.hint" />
-    </label>
-    <label>
+    </cfp-field-input>
+    <cfp-field-input>
       Opciones:
-    </label>
-    <button @click="field.options.push({ title: 'Opción', value: 'Valor' })">
-      Agregar Opcion
-    </button>
+    </cfp-field-input>
     <div
       v-for="option in field.options"
       :key="option.value"
@@ -27,7 +24,10 @@
       &nbsp;:&nbsp;
       <arandu-input v-model="option.value" />
     </div>
-  </div>
+    <button @click="field.options.push({ title: 'Opción', value: 'Valor' })">
+      Agregar Opcion
+    </button>
+  </fragment>
 </template>
 
 <script>
@@ -42,10 +42,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+// eslint-disable-next-line vue-scoped-css/no-unused-selector
 .cfp-select-option {
   display: flex;
   flex-direction: row;
 
+  & + & {
+    margin-top: 0.5rem;
+  }
+
+  // eslint-disable-next-line vue-scoped-css/no-unused-selector
   input {
     width: 5rem;
   }

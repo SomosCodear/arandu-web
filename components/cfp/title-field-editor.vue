@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <label>
+  <fragment>
+    <cfp-field-input>
       Título:
       <arandu-input v-model="field.title" />
-    </label>
-    <label>
+    </cfp-field-input>
+    <cfp-field-input>
       Descripción:
       <arandu-input v-model="field.description" />
-    </label>
-  </div>
+    </cfp-field-input>
+  </fragment>
 </template>
 
 <script>
