@@ -16,8 +16,8 @@
       Opciones:
     </cfp-field-input>
     <div
-      v-for="option in field.options"
-      :key="option.value"
+      v-for="(option, index) in field.options"
+      :key="index"
       class="cfp-select-option"
     >
       <arandu-input v-model="option.title" />
