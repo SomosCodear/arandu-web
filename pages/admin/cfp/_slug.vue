@@ -1,4 +1,4 @@
-ls<template>
+<template>
   <div v-if="cfp != null" class="cfp-admin-container">
     <h1>
       {{ cfp.title }}
