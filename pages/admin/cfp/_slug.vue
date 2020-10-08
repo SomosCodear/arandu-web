@@ -7,6 +7,17 @@
       {{ cfp.description }}
     </p>
     <div class="cfp-form">
+      <card class="cfp-toolbox">
+        <button
+          v-for="(name, type) in types"
+          :key="type"
+          :value="type"
+          type="button"
+          @click="addField(type)"
+        >
+          {{ name }}
+        </button>
+      </card>
       <card class="cfp-preview">
         <div
           v-for="field in sortedFields"
@@ -37,7 +48,7 @@ import * as R from 'ramda';
 import { useContext } from '@nuxtjs/composition-api';
 import { computed, ref } from '@vue/composition-api';
 import { useParamToRef } from '~/utils/useParamToRef';
-import { useCfpBySlug } from '~/data/cfp';
+import { FIELD_NAMES, useCfpBySlug } from '~/data/cfp';
 
 export default {
   setup() {
@@ -46,6 +57,25 @@ export default {
     const { data: cfp, mutate } = useCfpBySlug(slugRef);
     const sortedFields = computed(() => R.sortBy(R.prop('order'))(cfp.value.fields));
     const editingFieldRef = ref({});
+
+    const addField = (type) => {
+      mutate(async () => ({
+        ...cfp.value,
+        fields: [
+          ...cfp.value.fields,
+          {
+            id: 'fake',
+            type,
+            name: 'nuevo_campo',
+            title: 'Nuevo Campo',
+            hint: '',
+            description: '',
+            order: sortedFields.value[sortedFields.value.length - 1].order + 1,
+            options: [],
+          },
+        ],
+      }));
+    };
 
     const startEditing = (field) => {
       let originalField = {};
@@ -89,8 +119,10 @@ export default {
 
     return {
       cfp,
+      types: FIELD_NAMES,
       sortedFields,
       editingField: editingFieldRef,
+      addField,
       startEditing,
       saveChanges,
       cancelChanges,
@@ -102,7 +134,7 @@ export default {
 <style lang="scss" scoped>
 .cfp-admin-container {
   margin: 4rem auto;
-  width: 64rem;
+  max-width: 80rem;
   display: flex;
   flex-direction: column;
   text-align: center;
@@ -119,9 +151,18 @@ export default {
   text-align: left;
 }
 
+.cfp-toolbox {
+  flex: 1;
+
+  // eslint-disable-next-line vue-scoped-css/no-unused-selector
+  button + button {
+    margin-top: 0.5rem;
+  }
+}
+
 .cfp-preview {
-  width: 70%;
-  margin-right: 1rem;
+  width: 60%;
+  margin: 0 1rem;
 }
 
 .cfp-config {
