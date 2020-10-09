@@ -19,17 +19,23 @@
         </button>
       </card>
       <card class="cfp-preview">
-        <div
-          v-for="field in sortedFields"
-          :key="field.id"
-          class="cfp-field-wrapper"
-          :class="{ active: field.id === editingField.id }"
-          @click="startEditing(field)"
+        <draggable
+          v-model="sortedFields"
+          handle=".handle"
         >
-          <cfp-field
-            :field="editingField.id === field.id ? editingField : field"
-          />
-        </div>
+          <div
+            v-for="field in sortedFields"
+            :key="field.id"
+            class="cfp-field-wrapper"
+            :class="{ active: field.id === editingField.id }"
+            @click="startEditing(field)"
+          >
+            <div class="handle" />
+            <cfp-field
+              :field="editingField.id === field.id ? editingField : field"
+            />
+          </div>
+        </draggable>
       </card>
       <card class="cfp-config">
         <cfp-field-editor
@@ -47,6 +53,7 @@
 import * as R from 'ramda';
 import { useContext } from '@nuxtjs/composition-api';
 import { computed, ref } from '@vue/composition-api';
+import { mutate } from 'swrv';
 import { useParamToRef } from '~/utils/useParamToRef';
 import { FIELD_NAMES, useCfpBySlug } from '~/data/cfp';
 
@@ -54,12 +61,50 @@ export default {
   setup() {
     const { app } = useContext();
     const slugRef = useParamToRef('slug');
-    const { data: cfp, mutate } = useCfpBySlug(slugRef);
-    const sortedFields = computed(() => R.sortBy(R.prop('order'))(cfp.value.fields));
+    const { key, data: cfp, mutate: revalidate } = useCfpBySlug(slugRef, {
+      revalidateOnFocus: false,
+    });
     const editingFieldRef = ref({});
+    const sortedFields = computed({
+      get: () => R.sortBy(R.prop('order'))(cfp.value.fields),
+      set: async (reorderedFields) => {
+        const [newOrder, movedFieldId] = R.compose(
+          R.head,
+          R.sort(R.descend(R.nth(2))),
+          R.addIndex(R.map)((field, index) => [
+            index + 1, // new order
+            field.id,
+            Math.abs(field.order - index - 1), // old order - new order
+          ]),
+        )(reorderedFields);
+
+        // optimistic update
+        mutate(key.value, {
+          ...cfp.value,
+          fields: R.addIndex(R.map)((field, index) => ({
+            ...field,
+            order: index + 1,
+          }))(reorderedFields),
+        });
+
+        // actual update
+        await app.$axios.$patch(
+          `${app.$config.apiUrl}/cfps/${slugRef.value}/field/${movedFieldId}`,
+          { order: newOrder },
+        );
+
+        // make sure the field being edited also has the correct order
+        if (editingFieldRef.value.id === movedFieldId) {
+          editingFieldRef.value.order = newOrder;
+        }
+
+        // revalidate all fields positions
+        revalidate();
+      },
+    });
 
     const addField = (type) => {
-      mutate(async () => ({
+      mutate(key.value, {
         ...cfp.value,
         fields: [
           ...cfp.value.fields,
@@ -74,7 +119,7 @@ export default {
             options: [],
           },
         ],
-      }));
+      });
     };
 
     const startEditing = (field) => {
@@ -96,7 +141,7 @@ export default {
     };
 
     const saveChanges = async () => {
-      await mutate(async () => {
+      await revalidate(async () => {
         const changedField = await app.$axios.$patch(
           `${app.$config.apiUrl}/cfps/${slugRef.value}/field/${editingFieldRef.value.id}`,
           R.omit(['id'], editingFieldRef.value),
@@ -173,7 +218,19 @@ export default {
 
 .cfp-field-wrapper {
   padding: 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   cursor: pointer;
+
+  .handle {
+    width: 0.25rem;
+    height: 1rem;
+    margin-right: 1rem;
+    border-left: 0.125rem solid black;
+    border-right: 0.125rem solid black;
+    opacity: 0.5;
+  }
 
   &.active {
     box-shadow: 0 0 0.125rem 0.0625rem var(--arandu-green);
