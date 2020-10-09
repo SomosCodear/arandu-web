@@ -51,19 +51,18 @@
 
 <script>
 import * as R from 'ramda';
-import { useContext } from '@nuxtjs/composition-api';
 import { computed, ref } from '@vue/composition-api';
 import { mutate } from 'swrv';
 import { useParamToRef } from '~/utils/useParamToRef';
-import { FIELD_NAMES, useCfpBySlug } from '~/data/cfp';
+import { FIELD_NAMES, useCfpBySlug, useUpdateCfpField } from '~/data/cfp';
 
 export default {
   setup() {
-    const { app } = useContext();
     const slugRef = useParamToRef('slug');
     const { key, data: cfp, mutate: revalidate } = useCfpBySlug(slugRef, {
       revalidateOnFocus: false,
     });
+    const updateField = useUpdateCfpField(key);
     const editingFieldRef = ref({});
     const sortedFields = computed({
       get: () => R.sortBy(R.prop('order'))(cfp.value.fields),
@@ -88,10 +87,7 @@ export default {
         });
 
         // actual update
-        await app.$axios.$patch(
-          `${app.$config.apiUrl}/cfps/${slugRef.value}/field/${movedFieldId}`,
-          { order: newOrder },
-        );
+        await updateField(movedFieldId, { order: newOrder });
 
         // make sure the field being edited also has the correct order
         if (editingFieldRef.value.id === movedFieldId) {
@@ -142,8 +138,8 @@ export default {
 
     const saveChanges = async () => {
       await revalidate(async () => {
-        const changedField = await app.$axios.$patch(
-          `${app.$config.apiUrl}/cfps/${slugRef.value}/field/${editingFieldRef.value.id}`,
+        const changedField = await updateField(
+          editingFieldRef.value.id,
           R.omit(['id'], editingFieldRef.value),
         );
 
