@@ -93,11 +93,16 @@ export default {
         });
 
         // actual update
-        await updateField(movedFieldId, { order: newOrder });
+        try {
+          await updateField(movedFieldId, { order: newOrder });
 
-        // make sure the field being edited also has the correct order
-        if (editingFieldRef.value.id === movedFieldId) {
-          editingFieldRef.value.order = newOrder;
+          // make sure the field being edited also has the correct order
+          if (editingFieldRef.value.id === movedFieldId) {
+            editingFieldRef.value.order = newOrder;
+          }
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.log('Failed to save reorder', e);
         }
 
         // revalidate all fields positions
