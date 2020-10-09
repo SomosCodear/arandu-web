@@ -40,6 +40,7 @@ export default {
   */
   plugins: [
     '~/plugins/vue-fragment',
+    '~/plugins/vue-draggable',
   ],
   /*
   ** Auto import components
