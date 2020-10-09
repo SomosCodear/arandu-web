@@ -54,7 +54,12 @@ import * as R from 'ramda';
 import { computed, ref } from '@vue/composition-api';
 import { mutate } from 'swrv';
 import { useParamToRef } from '~/utils/useParamToRef';
-import { FIELD_NAMES, useCfpBySlug, useUpdateCfpField } from '~/data/cfp';
+import {
+  FIELD_NAMES,
+  useCfpBySlug,
+  useCreateCfpField,
+  useUpdateCfpField,
+} from '~/data/cfp';
 
 export default {
   setup() {
@@ -62,6 +67,7 @@ export default {
     const { key, data: cfp, mutate: revalidate } = useCfpBySlug(slugRef, {
       revalidateOnFocus: false,
     });
+    const createField = useCreateCfpField(key);
     const updateField = useUpdateCfpField(key);
     const editingFieldRef = ref({});
     const sortedFields = computed({
@@ -100,21 +106,23 @@ export default {
     });
 
     const addField = (type) => {
-      mutate(key.value, {
-        ...cfp.value,
-        fields: [
-          ...cfp.value.fields,
-          {
-            id: 'fake',
-            type,
-            name: 'nuevo_campo',
-            title: 'Nuevo Campo',
-            hint: '',
-            description: '',
-            order: sortedFields.value[sortedFields.value.length - 1].order + 1,
-            options: [],
-          },
-        ],
+      revalidate(async () => {
+        const newField = await createField({
+          type,
+          name: 'nuevo_campo',
+          title: 'Nuevo Campo',
+          hint: 'Hint',
+          description: 'Description',
+          order: sortedFields.value[sortedFields.value.length - 1].order + 1,
+        });
+
+        return {
+          ...cfp.value,
+          fields: [
+            ...cfp.value.fields,
+            newField,
+          ],
+        };
       });
     };
 
