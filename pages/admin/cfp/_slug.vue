@@ -43,6 +43,7 @@
           :field="editingField"
           @save-changes="saveChanges()"
           @cancel-changes="cancelChanges()"
+          @remove-field="removeField()"
         />
       </card>
     </div>
@@ -59,6 +60,7 @@ import {
   useCfpBySlug,
   useCreateCfpField,
   useUpdateCfpField,
+  useDeleteCfpField,
 } from '~/data/cfp';
 
 export default {
@@ -69,6 +71,7 @@ export default {
     });
     const createField = useCreateCfpField(key);
     const updateField = useUpdateCfpField(key);
+    const deleteField = useDeleteCfpField(key);
     const editingFieldRef = ref({});
     const sortedFields = computed({
       get: () => R.sortBy(R.prop('order'))(cfp.value.fields),
@@ -171,6 +174,26 @@ export default {
       editingFieldRef.value = {};
     };
 
+    const removeField = async () => {
+      // optimistic update
+      mutate(key.value, {
+        ...cfp.value,
+        fields: R.reject(R.propEq('id', editingFieldRef.value.id))(cfp.value.fields),
+      });
+
+      // actual update
+      try {
+        await deleteField(editingFieldRef.value.id);
+        editingFieldRef.value = {};
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log('Failed to delete field', e);
+      }
+
+      // revalidate all fields positions
+      revalidate();
+    };
+
     return {
       cfp,
       types: FIELD_NAMES,
@@ -180,6 +203,7 @@ export default {
       startEditing,
       saveChanges,
       cancelChanges,
+      removeField,
     };
   },
 };

@@ -28,6 +28,9 @@
       <button @click="$emit('cancel-changes')">
         Cancelar
       </button>
+      <button @click="$emit('remove-field')">
+        Eliminar
+      </button>
     </div>
   </fragment>
 </template>
@@ -61,5 +64,12 @@ export default {
 <style lang="scss" scoped>
 .actions {
   margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  button + button {
+    margin-top: 0.5rem;
+  }
 }
 </style>
