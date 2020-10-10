@@ -24,19 +24,39 @@
       &nbsp;:&nbsp;
       <arandu-input v-model="option.value" />
     </div>
-    <button @click="field.options.push({ title: 'Opción', value: 'Valor' })">
+    <button @click="addOption()">
       Agregar Opcion
     </button>
   </fragment>
 </template>
 
 <script>
+import * as R from 'ramda';
+
 export default {
   props: {
     field: {
       type: Object,
       default: null,
     },
+  },
+  setup(props) {
+    const addOption = () => {
+      props.field.options.push({
+        title: 'Opción',
+        value: 'Valor',
+        description: '',
+        order: R.compose(
+          R.add(1),
+          R.propOr(0, 'order'),
+          R.last,
+        )(props.field.options),
+      });
+    };
+
+    return {
+      addOption,
+    };
   },
 };
 </script>
