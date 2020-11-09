@@ -10,7 +10,8 @@
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "lint:style": "stylelint **/*.{vue,css} --ignore-path .gitignore",
     "lint": "yarn lint:js && yarn lint:style",
-    "test": "jest"
+    "test": "jest",
+    "e2e:dev": "cypress open"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",
@@ -45,10 +46,12 @@
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.1.0",
     "babel-plugin-ramda": "^2.0.0",
+    "cypress": "^5.4.0",
     "eslint": "7.2.0",
     "eslint-config-airbnb": "18.2.0",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-cypress": "^2.11.2",
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-jsx-a11y": "^6.3.0",
     "eslint-plugin-nuxt": "^1.0.0",

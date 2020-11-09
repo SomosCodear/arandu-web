@@ -3,6 +3,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    'cypress/globals': true,
   },
   parserOptions: {
     parser: 'babel-eslint',
@@ -12,8 +13,10 @@ module.exports = {
     'airbnb-base',
     'plugin:nuxt/recommended',
     'plugin:vue-scoped-css/vue3-recommended',
+    'plugin:cypress/recommended',
   ],
   plugins: [
+    'cypress',
   ],
   settings: {
     'import/resolver': {
