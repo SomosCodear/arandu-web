@@ -26,6 +26,7 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Roboto:400,500,600&display=swap' },
     ],
   },
   /*
@@ -33,6 +34,7 @@ export default {
   */
   css: [
     './styles/theme.css',
+    './styles/global.css',
   ],
   /*
   ** Plugins to load before mounting the App

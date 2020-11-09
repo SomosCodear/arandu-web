@@ -1,5 +1,21 @@
 <template>
-  <div>
+  <div class="container">
+    <header>
+      <nav>
+        <div class="logo">
+          <img src="/images/logo.svg" alt="arandu logo">
+        </div>
+        <div class="breadcrumb">
+          <img src="/images/cfp.svg" alt="">
+          Convocatorias
+        </div>
+        <div class="right-nav">
+          <img src="/images/community.svg" alt="">
+          Comunidad
+        </div>
+      </nav>
+      <div class="separator" />
+    </header>
     <Nuxt />
   </div>
 </template>
@@ -8,23 +24,52 @@
 /* eslint-disable vue-scoped-css/require-scoped */
 </script>
 
-<style>
-html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
+<style lang="scss" scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+nav {
+  display: flex;
+  flex-direction: row;
+  background-color: var(--header-nav-background);
+  align-items: center;
+  color: var(--header-text);
+
+  img {
+    display: block;
+  }
+
+  .logo {
+    padding: 0.75rem;
+    background-color: var(--header-logo-background);
+  }
+
+  .breadcrumb,
+  .right-nav {
+    display: flex;
+    align-items: center;
+
+    img {
+      margin-right: 0.75rem;
+    }
+  }
+
+  .breadcrumb {
+    flex: 1;
+    padding: 0.75rem;
+  }
+
+  .right-nav {
+    padding: 0.75rem;
+    padding-right: 5rem;
+  }
+}
+
+.separator {
+  min-height: 2rem;
+  background-color: var(--header-separator-background);
 }
 </style>

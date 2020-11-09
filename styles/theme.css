@@ -2,15 +2,24 @@
   /* base colors */
   --gray: #c2c2c2;
   --shadow-color: 0 0 0.125rem 0.0625rem rgba(0, 0, 0, 0.34);
-  --arandu-green: #87c986;
+  --green: #00ab89;
+  --green-dark: #00876c;
+  --green-darker: #00715a;
+  --white: #fff;
+
+  /* header */
+  --header-nav-background: var(--green-dark);
+  --header-logo-background: var(--green);
+  --header-text: var(--white);
+  --header-separator-background: var(--green-darker);
 
   /* cfp field */
   --hint-color: var(--gray);
 
   /* input */
-  --input-border-color: var(--arandu-green);
+  --input-border-color: var(--green);
 
   /* select */
-  --select-border-color: var(--arandu-green);
-  --select-arrow-color: var(--arandu-green);
+  --select-border-color: var(--green);
+  --select-arrow-color: var(--green);
 }
