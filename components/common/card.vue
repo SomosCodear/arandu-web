@@ -10,7 +10,9 @@ export default {};
 
 <style scoped>
 .card-container {
-  box-shadow: var(--shadow-color);
+  box-shadow: var(--card-shadow);
   padding: 1rem;
+  border-radius: 0.25rem;
+  background-color: var(--card-background);
 }
 </style>

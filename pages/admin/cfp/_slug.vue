@@ -1,5 +1,5 @@
 <template>
-  <div v-if="cfp != null" class="cfp-admin-container">
+  <main v-if="cfp != null" class="cfp-admin-container">
     <h1>
       {{ cfp.title }}
     </h1>
@@ -7,22 +7,19 @@
       {{ cfp.description }}
     </p>
     <div class="cfp-form">
-      <card class="cfp-toolbox">
-        <button
+      <div class="cfp-toolbox">
+        <arandu-button
           v-for="(name, type) in types"
           :key="type"
-          :value="type"
+          class="field-add-button"
           type="button"
           @click="addField(type)"
         >
           {{ name }}
-        </button>
-      </card>
+        </arandu-button>
+      </div>
       <card class="cfp-preview">
-        <draggable
-          v-model="sortedFields"
-          handle=".handle"
-        >
+        <draggable v-model="sortedFields">
           <div
             v-for="field in sortedFields"
             :key="field.id"
@@ -30,14 +27,16 @@
             :class="{ active: field.id === editingField.id }"
             @click="startEditing(field)"
           >
-            <div class="handle" />
             <cfp-field
               :field="editingField.id === field.id ? editingField : field"
             />
           </div>
         </draggable>
       </card>
-      <card class="cfp-config">
+      <card
+        class="cfp-config"
+        :class="{ active: editingField.id != null }"
+      >
         <cfp-field-editor
           v-if="'id' in editingField"
           :field="editingField"
@@ -47,7 +46,7 @@
         />
       </card>
     </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -211,62 +210,78 @@ export default {
 
 <style lang="scss" scoped>
 .cfp-admin-container {
-  margin: 4rem auto;
-  max-width: 80rem;
+  flex: 1;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   text-align: center;
+  background-color: var(--cfp-admin-background);
 
   h1 {
     margin: 0;
   }
-}
 
-.cfp-form {
-  display: flex;
-  flex-direction: row;
-  align-self: stretch;
-  text-align: left;
-}
-
-.cfp-toolbox {
-  flex: 1;
-
-  // eslint-disable-next-line vue-scoped-css/no-unused-selector
-  button + button {
-    margin-top: 0.5rem;
-  }
-}
-
-.cfp-preview {
-  width: 60%;
-  margin: 0 1rem;
-}
-
-.cfp-config {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.cfp-field-wrapper {
-  padding: 1rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
-
-  .handle {
-    width: 0.25rem;
-    height: 1rem;
-    margin-right: 1rem;
-    border-left: 0.125rem solid black;
-    border-right: 0.125rem solid black;
-    opacity: 0.5;
+  .cfp-form {
+    flex: 1;
+    align-self: stretch;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    text-align: left;
   }
 
-  &.active {
-    box-shadow: 0 0 0.125rem 0.0625rem var(--arandu-green);
+  .cfp-toolbox {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    max-width: 12.5rem;
+    margin-right: 3.375rem;
+
+    .field-add-button {
+      text-align: left;
+    }
+
+    // eslint-disable-next-line vue-scoped-css/no-unused-selector
+    .field-add-button + .field-add-button {
+      margin-top: 0.312rem;
+    }
+  }
+
+  .cfp-preview {
+    width: 40rem;
+    padding: 1rem 1.5rem;
+    margin-bottom: -2rem;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .cfp-config {
+    visibility: hidden;
+    flex: 1;
+    max-width: 12.5rem;
+    margin-left: 3.375rem;
+    display: flex;
+    flex-direction: column;
+
+    &.active {
+      visibility: visible;
+    }
+  }
+
+  .cfp-field-wrapper {
+    padding: 1rem 2rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 0.062rem solid var(--cfp-admin-field-wrapper-border);
+    border-radius: 0 0 0.25rem 0.25rem;
+    cursor: pointer;
+
+    &.active {
+      border-color: var(--cfp-admin-field-wrapper-active-border);
+    }
   }
 }
 </style>
